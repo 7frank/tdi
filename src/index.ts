@@ -1,26 +1,13 @@
 import "reflect-metadata";
 import { Container, Inject, Service, ContainerInstance } from "typedi";
-import { defer, Wire } from "./di-utils";
+import { PrintInterface } from "./PrintInterface";
 
-interface PrintInterface {
-  print: () => void;
-}
-
-const PrintInterface = defer<PrintInterface>();
-
-@Wire({ extends: PrintInterface })
-@Service()
-class BasicPrintService implements PrintInterface {
-  print() {
-    console.log("I am alive!");
-  }
-}
+// Note: we would need a babel plugin that would traverse our code base and take all files with a "@Wire" decorator and prepend them to the index.js file to have a proper auto wiring
+import "./BasicPrintService";
 
 @Service()
 class Application {
-  @Inject()
-  // @ts-ignore
-  printService: PrintInterface;
+  constructor(@Inject() public printService: PrintInterface) {}
 }
 
 const instance = Container.get(Application);
