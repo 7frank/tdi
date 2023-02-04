@@ -27,7 +27,7 @@ export function Wire<T, S>(
       //   ),
       //value: EMPTY_VALUE,
     };
-    // console.log(serviceMetadata);
+    console.log(serviceMetadata);
     if (options.extends)
       Container.set(options.extends, Container.get(targetConstructor));
     else throw new Error("Wire decorator requires 'extends'");
