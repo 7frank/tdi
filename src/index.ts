@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import { Container, Inject, Service, ContainerInstance } from "typedi";
+import { Container, Inject, Service } from "typedi";
 import { PrintInterface } from "./PrintInterface";
 
-// Note: we would need a babel plugin that would traverse our code base and take all files with a "@Wire" decorator and prepend them to the index.js file to have a proper auto wiring
-import "./BasicPrintService";
+// Note: this file must be on top of your application that uses typedi together with the Wire decorator for autowiring to work
+import "./di.generated";
 
 @Service()
 class Application {

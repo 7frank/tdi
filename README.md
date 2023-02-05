@@ -9,4 +9,6 @@ But that would require two babel plugins:
 
 # develop
 
-`ts-node src/index.ts`
+`ts-node src/index.ts` to run the di example
+
+`yarn di` to query for DI interfaces and update di.generated.ts file that needs to be imported at the top of your index file
