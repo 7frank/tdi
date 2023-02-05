@@ -1,5 +1,5 @@
 // Note: this file must be on top of your application that uses typedi together with the Wire decorator for autowiring to work
-// Found [ 'AutoWire', 'Service' ] BasicPrintService [ 'PrintInterface' ]
+// Found match with AutoWire in decorators [ 'AutoWire', 'Service' ] of class BasicPrintService that implements [ 'PrintInterface' ]
 import "./BasicPrintService.ts"
-// Found [ 'AutoWire', 'Service' ] InMemoryCrudService [ 'CrudInterface' ]
+// Found match with AutoWire in decorators [ 'AutoWire', 'Service' ] of class InMemoryCrudService that implements [ 'CrudInterface' ]
 import "./InMemoryCrudService.ts"

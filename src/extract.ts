@@ -43,8 +43,18 @@ function parseSource(
         (n) => n.expression.callee.name
       );
 
-      if (decorators.some(selector)) {
-        console.log("// Found", decorators, className, implement);
+      const found = decorators.find(selector);
+      if (found) {
+        console.log(
+          "// Found match with",
+          found,
+          "in decorators",
+          decorators,
+          "of class",
+          className,
+          "that implements",
+          implement
+        );
         hasFound = true;
         return false;
       }
