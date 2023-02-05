@@ -29,7 +29,7 @@ main();
 
 function parseSource(
   source: string,
-  selector = (n) => n == "Autowire" || n == "Wire"
+  selector = (n) => n == "Autowire" || n == "Wire" || n == "AutoWire"
 ) {
   const ast = parse(source, { parser: ts });
   let hasFound = false;

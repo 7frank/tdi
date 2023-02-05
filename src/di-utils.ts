@@ -25,3 +25,6 @@ export function Wire<T, S>(
 export function defer<T>() {
   return class Dummy {} as ClassType<T>;
 }
+
+// export as default to make it a bit easier to rename in case we want to change the decorator name in the future
+export default Wire;
