@@ -73,7 +73,9 @@ export default function myTransformerPlugin(
                 return ts.visitEachChild(node, visitor, ctx);
               }
 
-              const diDecorators = implement?.map((n) => createDiDecorator(n));
+              const diDecorators = implement?.map((n) =>
+                createDiDecorator("Service", n)
+              );
               diDecorators?.[0];
               // Note: used deprecated version as this generates the correct output, for now
               node = factory.updateClassDeclaration(
@@ -97,7 +99,7 @@ export default function myTransformerPlugin(
   };
 }
 
-function createDiDecorator(id: string) {
+function createDiDecorator(name: string, id: string) {
   // return factory.createDecorator(
   //   factory.createCallExpression(
   //     factory.createIdentifier("Service"),
@@ -110,7 +112,7 @@ function createDiDecorator(id: string) {
     factory.createCallExpression(
       factory.createPropertyAccessExpression(
         factory.createIdentifier("typedi_1"),
-        factory.createIdentifier("Service")
+        factory.createIdentifier(name)
       ),
       undefined,
       [factory.createStringLiteral(id)]
