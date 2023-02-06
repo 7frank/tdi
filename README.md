@@ -29,3 +29,5 @@ It works the following:
 - extract.ts currently contains a static string "AutoWireService",
   - move this into a global config file
   - (maybe extract from ts-config)
+- order of appearance does matter. we will have to create a dependency tree and generate the imports from there.
+  - This could be done, by logging the dependencies in the transformer

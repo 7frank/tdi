@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "ts-node --compiler ttypescript src/index.ts",
     "build": "ttsc",
-    "di": "tsx  src/extract.ts > src/di.generated.ts",
+    "di": "tsx src/utils/extract.ts > src/di.generated.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
