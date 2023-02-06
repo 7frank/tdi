@@ -163,6 +163,18 @@ export default function myTransformerPlugin(
                 createDiDecorator(foundClassDecoratorName, n)
               );
 
+              implement?.forEach((n) => {
+                const len = process.cwd().split("/").length;
+                const relativeImport =
+                  "./" +
+                  sourceFile.fileName
+                    .split("/")
+                    .slice(len + 1)
+                    .join("/");
+
+                console.log(relativeImport, className, "=>", n);
+              });
+
               // Note: used deprecated version as this generates the correct output, for now
               node = factory.updateClassDeclaration(
                 node,
