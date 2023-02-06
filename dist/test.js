@@ -12,25 +12,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.InMemoryCrudService = void 0;
 require("reflect-metadata");
 const typedi_1 = require("typedi");
 require("./di.generated");
-const users = {};
-// (2) the service that implements the interface and that gets injected
-let InMemoryCrudService = class InMemoryCrudService {
-    create(t) {
-        users[t.id] = t;
-    }
-    read(id) {
-        return users[id];
-    }
-};
-InMemoryCrudService = __decorate([
-    (0, typedi_1.Service)(),
-    typedi_1.Service("CrudInterface_User_")
-], InMemoryCrudService);
-exports.InMemoryCrudService = InMemoryCrudService;
 // (3) the service that uses the interface
 let Application = class Application {
     constructor(databaseService) {

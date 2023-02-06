@@ -14,10 +14,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
 const typedi_1 = require("typedi");
-const PrintInterface_1 = require("./PrintInterface");
 // Note: this file must be on top of your application that uses typedi together with the Wire decorator for autowiring to work
 require("./di.generated");
-const CrudInterface_1 = require("./CrudInterface");
 let Application = class Application {
     constructor(printService, databaseService // Note: we do currently have no type checks for template parameters,
     ) {
@@ -29,8 +27,7 @@ Application = __decorate([
     (0, typedi_1.Service)(),
     __param(0, typedi_1.Inject("PrintInterface")),
     __param(1, typedi_1.Inject("CrudInterface_User_")),
-    __metadata("design:paramtypes", [PrintInterface_1.PrintInterface,
-        CrudInterface_1.CrudInterface])
+    __metadata("design:paramtypes", [Object, Object])
 ], Application);
 const instance = typedi_1.Container.get(Application);
 instance.printService.print();

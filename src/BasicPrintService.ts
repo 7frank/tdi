@@ -1,9 +1,7 @@
-import { Service } from "typedi";
-import AutoWire from "./di-utils";
+import { Service as DiService } from "typedi";
 import { PrintInterface } from "./PrintInterface";
 
-@AutoWire({ extends: PrintInterface })
-@Service()
+@DiService()
 export class BasicPrintService implements PrintInterface {
   print() {
     console.log("I am alive!");
