@@ -44,7 +44,7 @@ export default function myTransformerPlugin(
            * find "inject" decorators and insert service name
            */
           if (ts.isConstructorDeclaration(node)) {
-            node.parameters.map((param) => {
+            const newParameters = node.parameters.map((param) => {
               // we can only inject if we have a type
               if (param.type) {
                 const serviceName = sanitize(param.type.getText());
@@ -75,23 +75,29 @@ export default function myTransformerPlugin(
                     (node.parent as ts.ClassDeclaration).name?.escapedText
                   );
                 }
-              }
 
-              //   const diDecorators = implement?.map((n) =>
-              //   createDiDecorator("Service", n)
-              // );
-              // diDecorators?.[0];
-              // // Note: used deprecated version as this generates the correct output, for now
-              // node = factory.updateClassDeclaration(
-              //   node,
-              //   [...(ts.getDecorators(node) ?? []), ...(diDecorators ?? [])],
-              //   ts.getModifiers(node),
-              //   node.name,
-              //   node.typeParameters,
-              //   node.heritageClauses,
-              //   node.members
-              // );
+                // TODO update param decorator otherwise nothing will work
+                param = factory.updateParameterDeclaration(
+                  param,
+                  ts.getDecorators(param),
+                  ts.getModifiers(param),
+                  param.dotDotDotToken,
+                  param.name,
+                  param.questionToken,
+                  param.type,
+                  param.initializer
+                );
+              }
+              return param;
             });
+
+            // Note: used deprecated version as this generates the correct output, for now
+            node = factory.updateConstructorDeclaration(
+              node,
+              ts.getModifiers(node),
+              newParameters,
+              node.body
+            );
 
             return ts.visitEachChild(node, visitor, ctx);
           }
@@ -140,7 +146,7 @@ export default function myTransformerPlugin(
               const diDecorators = implement?.map((n) =>
                 createDiDecorator("Service", n)
               );
-              diDecorators?.[0];
+
               // Note: used deprecated version as this generates the correct output, for now
               node = factory.updateClassDeclaration(
                 node,
