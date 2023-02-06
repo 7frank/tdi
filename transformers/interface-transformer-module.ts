@@ -38,9 +38,9 @@ export default function myTransformerPlugin(
           if (ts.isClassDeclaration(node)) {
             const className = node.name?.escapedText;
 
-            const implement = node.heritageClauses?.flatMap((n) =>
-              n.types.map((f) => f.getText())
-            );
+            const implement = node.heritageClauses
+              ?.flatMap((n) => n.types.map((f) => f.getText()))
+              .map(sanitize);
 
             const decoratorNames = ts
               .getDecorators(node)
@@ -92,6 +92,15 @@ export default function myTransformerPlugin(
   };
 }
 
+/**
+ *
+ * @param s remove special characters so that key in di container does match
+ * @returns
+ */
+function sanitize(s: string) {
+  return s.replace(/[^\w\s]/gi, "_");
+}
+
 function createDiContainerConnection(className: string, implement: string) {
   //const implement = "CrudInterface<User>";
   //const className = "InMemoryCrudService";
@@ -113,6 +122,31 @@ function createDiContainerConnection(className: string, implement: string) {
       )
     ),
   ];
+
+  // return factory.createCallExpression(
+  //   factory.createPropertyAccessExpression(
+  //     factory.createPropertyAccessExpression(
+  //       factory.createIdentifier("typedi_1"),
+  //       factory.createIdentifier("Container")
+  //     ),
+  //     factory.createIdentifier("set")
+  //   ),
+  //   undefined,
+  //   [
+  //     factory.createStringLiteral(implement),
+  //     factory.createCallExpression(
+  //       factory.createPropertyAccessExpression(
+  //         factory.createPropertyAccessExpression(
+  //           factory.createIdentifier("typedi_1"),
+  //           factory.createIdentifier("Container")
+  //         ),
+  //         factory.createIdentifier("get")
+  //       ),
+  //       undefined,
+  //       [factory.createIdentifier(className)]
+  //     ),
+  //   ]
+  // );
 }
 
 function addDiImportDeclaration(
