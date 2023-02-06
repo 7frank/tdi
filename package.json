@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "ts-node --compiler ttypescript src/index.ts",
     "di": "tsx  src/extract.ts > src/di.generated.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,6 +17,7 @@
     "fast-glob": "^3.2.12",
     "recast": "^0.22.0",
     "reflect-metadata": "^0.1.13",
+    "ttypescript": "^1.5.15",
     "typedi": "^0.10.0"
   }
 }

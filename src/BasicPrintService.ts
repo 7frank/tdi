@@ -4,7 +4,7 @@ import { PrintInterface } from "./PrintInterface";
 
 @AutoWire({ extends: PrintInterface })
 @Service()
-class BasicPrintService implements PrintInterface {
+export class BasicPrintService implements PrintInterface {
   print() {
     console.log("I am alive!");
   }

@@ -7,7 +7,7 @@ const users: Record<number, User> = {};
 
 @AutoWire({ extends: CrudInterface })
 @Service()
-class InMemoryCrudService implements CrudInterface<User> {
+export class InMemoryCrudService implements CrudInterface<User> {
   create(t: User) {
     users[t.id] = t;
   }
