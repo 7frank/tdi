@@ -16,6 +16,7 @@ require("reflect-metadata");
 const typedi_1 = require("typedi");
 // Note: this file must be on top of your application that uses typedi together with the Wire decorator for autowiring to work
 require("./di.generated");
+const helper_1 = require("./helper");
 let Application = class Application {
     constructor(printService, databaseService // Note: we do currently have no type checks for template parameters,
     ) {
@@ -24,9 +25,9 @@ let Application = class Application {
     }
 };
 Application = __decorate([
-    (0, typedi_1.Service)(),
-    __param(0, typedi_1.Inject("PrintInterface")),
-    __param(1, typedi_1.Inject("CrudInterface_User_")),
+    (0, helper_1.AutoWireService)(),
+    __param(0, helper_1.AutoWireInject("PrintInterface")),
+    __param(1, helper_1.AutoWireInject("CrudInterface_User_")),
     __metadata("design:paramtypes", [Object, Object])
 ], Application);
 const instance = typedi_1.Container.get(Application);

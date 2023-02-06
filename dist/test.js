@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
 const typedi_1 = require("typedi");
 require("./di.generated");
+const helper_1 = require("./helper");
 // (3) the service that uses the interface
 let Application = class Application {
     constructor(databaseService) {
@@ -22,8 +23,8 @@ let Application = class Application {
     }
 };
 Application = __decorate([
-    (0, typedi_1.Service)(),
-    __param(0, typedi_1.Inject("CrudInterface_User_")),
+    (0, helper_1.AutoWireService)(),
+    __param(0, helper_1.AutoWireInject("CrudInterface_User_")),
     __metadata("design:paramtypes", [Object])
 ], Application);
 // (4) the result

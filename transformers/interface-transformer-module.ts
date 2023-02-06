@@ -26,8 +26,8 @@ export default function myTransformerPlugin(
   opts: MyPluginOptions
 ) {
   const defaults: Partial<MyPluginOptions> = {
-    includedClassDecorators: ["DiService"],
-    includedFunctionDecorators: ["DiInject"],
+    includedClassDecorators: ["AutoWireService"],
+    includedFunctionDecorators: ["AutoWireInject"],
   };
   const file = program.getRootFileNames();
   console.log("parsing file with transformer plugin", file);
@@ -66,38 +66,41 @@ export default function myTransformerPlugin(
                 );
 
                 if (foundFunctionDeclaration) {
+                  const decoratorImportName =
+                    foundFunctionDeclaration.escapedText.toString();
+
+                  const diFunctionDecorators = [serviceName]?.map((n) =>
+                    createDiDecorator(decoratorImportName, n)
+                  );
+
+                  const dec = [
+                    // TODO we only want to replace the previous "inject" not throw away all other decorators as well
+                    // ...(ts.getDecorators(param) ?? []),
+                    ...(diFunctionDecorators ?? []),
+                  ];
+
+                  // TODO update param decorator otherwise nothing will work
+                  // Note: used deprecated version as this generates the correct output, for now
+                  param = factory.updateParameterDeclaration(
+                    param,
+                    dec,
+                    ts.getModifiers(param),
+                    param.dotDotDotToken,
+                    param.name,
+                    param.questionToken,
+                    param.type,
+                    param.initializer
+                  );
+
                   console.log(
                     "found function decorator",
-                    foundFunctionDeclaration.escapedText,
+                    decoratorImportName,
                     " injecting",
                     serviceName,
                     " at constructor for class",
                     (node.parent as ts.ClassDeclaration).name?.escapedText
                   );
                 }
-
-                const diFunctionDecorators = [serviceName]?.map((n) =>
-                  createDiDecorator("Inject", n)
-                );
-
-                const dec = [
-                  // TODO we only want to replace the previous "inject" not throw away all other decorators as well
-                  // ...(ts.getDecorators(param) ?? []),
-                  ...(diFunctionDecorators ?? []),
-                ];
-
-                // TODO update param decorator otherwise nothing will work
-                // Note: used deprecated version as this generates the correct output, for now
-                param = factory.updateParameterDeclaration(
-                  param,
-                  dec,
-                  ts.getModifiers(param),
-                  param.dotDotDotToken,
-                  param.name,
-                  param.questionToken,
-                  param.type,
-                  param.initializer
-                );
               }
               return param;
             });
@@ -138,9 +141,11 @@ export default function myTransformerPlugin(
             );
 
             if (foundRelevantDecoratorIdentifier) {
+              const foundClassDecoratorName =
+                foundRelevantDecoratorIdentifier.escapedText.toString();
               console.log(
                 "found decorator:",
-                foundRelevantDecoratorIdentifier.escapedText,
+                foundClassDecoratorName,
                 "at class",
                 className,
                 "that implements",
@@ -155,7 +160,7 @@ export default function myTransformerPlugin(
               }
 
               const diDecorators = implement?.map((n) =>
-                createDiDecorator("Service", n)
+                createDiDecorator(foundClassDecoratorName, n)
               );
 
               // Note: used deprecated version as this generates the correct output, for now
@@ -192,7 +197,7 @@ function createDiDecorator(name: string, id: string) {
   return factory.createDecorator(
     factory.createCallExpression(
       factory.createPropertyAccessExpression(
-        factory.createIdentifier("typedi_1"),
+        factory.createIdentifier("helper_1"),
         factory.createIdentifier(name)
       ),
       undefined,

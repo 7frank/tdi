@@ -1,10 +1,10 @@
-import { Service as DiService } from "typedi";
 import { CrudInterface } from "./CrudInterface";
+import { AutoWireService } from "./helper";
 import { User } from "./User";
 
 const users: Record<number, User> = {};
 
-@DiService()
+@AutoWireService()
 export class InMemoryCrudService implements CrudInterface<User> {
   create(t: User) {
     users[t.id] = t;

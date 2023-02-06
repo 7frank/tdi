@@ -7,14 +7,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BasicPrintService = void 0;
-const typedi_1 = require("typedi");
+const helper_1 = require("./helper");
 let BasicPrintService = class BasicPrintService {
     print() {
         console.log("I am alive!");
     }
 };
 BasicPrintService = __decorate([
-    (0, typedi_1.Service)(),
-    typedi_1.Service("PrintInterface")
+    (0, helper_1.AutoWireService)(),
+    helper_1.AutoWireService("PrintInterface")
 ], BasicPrintService);
 exports.BasicPrintService = BasicPrintService;

@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InMemoryCrudService = void 0;
-const typedi_1 = require("typedi");
+const helper_1 = require("./helper");
 const users = {};
 let InMemoryCrudService = class InMemoryCrudService {
     create(t) {
@@ -25,7 +25,7 @@ let InMemoryCrudService = class InMemoryCrudService {
     }
 };
 InMemoryCrudService = __decorate([
-    (0, typedi_1.Service)(),
-    typedi_1.Service("CrudInterface_User_")
+    (0, helper_1.AutoWireService)(),
+    helper_1.AutoWireService("CrudInterface_User_")
 ], InMemoryCrudService);
 exports.InMemoryCrudService = InMemoryCrudService;
