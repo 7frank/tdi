@@ -1,7 +1,7 @@
-{"import":"./","id":"BasicPrintService","parent":"PrintInterface","type":"service"}
+{"import":"./services/NestedChildService.ts","id":"NestedChildService","parent":"NestedInterface","type":"service"}
+{"import":"./services/InMemoryCrudService.ts","id":"InMemoryCrudService","parent":"CrudInterface_User_","type":"service"}
+{"import":"./services/BasicPrintService.ts","id":"BasicPrintService","parent":"PrintInterface","type":"service"}
 {"import":"./services/BasicPrintService.ts","id":"BasicPrintService","parent":"NestedInterface","type":"inject"}
-{"import":"./","id":"InMemoryCrudService","parent":"CrudInterface_User_","type":"service"}
 {"import":"./index.ts","id":"Application","parent":"PrintInterface","type":"inject"}
 {"import":"./index.ts","id":"Application","parent":"CrudInterface_User_","type":"inject"}
 {"import":"./test.ts","id":"Application","parent":"CrudInterface_User_","type":"inject"}
-{"import":"./","id":"NestedChildService","parent":"NestedInterface","type":"service"}

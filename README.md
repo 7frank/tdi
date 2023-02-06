@@ -4,8 +4,7 @@ This is a showcase for auto wiring dependency injection using interfaces.
 
 It works the following:
 
-- Run through code base and find class decorators named `@AutoWire` and create a file di.generated.ts, which currently has to be imported manually.
-- a function `defer` that creates a dummy class for the interfaces defined to be used for the DI step
+- Run through code base and find class decorators named `@AutoWireService` and `@AutoWireInject` and create a file di.generated.ts, which has to be imported manually at the entry file.
 
 # develop
 
@@ -20,11 +19,9 @@ It works the following:
 
 # example usage
 
-`yarn di`
 `yarn build`
+`yarn di`
 `node dist/index.js` or `node dist/test.js`
-
-WIP `tsx ./src/utils/generateDependencies.ts `
 
 # todo
 

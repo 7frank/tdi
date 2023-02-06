@@ -181,15 +181,7 @@ export default function myTransformerPlugin(
                * log class dependencies
                */
               implement?.forEach((n) => {
-                const len = process.cwd().split("/").length;
-                const relativeImport =
-                  "./" +
-                  sourceFile.fileName
-                    .split("/")
-                    .slice(len + 1)
-                    .join("/");
-
-                logDependencies(relativeImport, className, n, "service");
+                logDependencies(sourceFile.fileName, className, n, "service");
               });
 
               // Note: used deprecated version as this generates the correct output, for now
