@@ -1,5 +1,5 @@
-import { AutoWireService } from "./helper";
-import { PrintInterface } from "./interfaces/PrintInterface";
+import { AutoWireService } from "../helper";
+import { PrintInterface } from "../interfaces/PrintInterface";
 
 @AutoWireService()
 export class BasicPrintService implements PrintInterface {
