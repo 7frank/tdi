@@ -26,7 +26,10 @@ export class InMemoryCrudService implements CrudInterface<User> {
 // (3) the service that uses the interface
 @DiService()
 class Application {
-  constructor(@DiInject() public databaseService: CrudInterface<User>) {}
+  constructor(
+    @DiInject() public databaseService: CrudInterface<User>,
+    @DiInject() public databaseService2: CrudInterface<User>
+  ) {}
 }
 
 // (4) the result

@@ -40,38 +40,65 @@ export default function myTransformerPlugin(
     before(ctx: ts.TransformationContext) {
       return (sourceFile: ts.SourceFile) => {
         function visitor(node: ts.Node): ts.VisitResult<ts.Node> {
+          /**
+           * find "inject" decorators and insert service name
+           */
           if (ts.isConstructorDeclaration(node)) {
             node.parameters.map((param) => {
-              const decoratorCallExpressions = ts
-                .getDecorators(param)
-                ?.map((d) => d.expression)
-                .filter(ts.isCallExpression);
+              // we can only inject if we have a type
+              if (param.type) {
+                const serviceName = sanitize(param.type.getText());
 
-              const decoratorIdentifiers = decoratorCallExpressions
-                ?.map((d) => d.expression)
-                .filter(ts.isIdentifier);
+                const decoratorCallExpressions = ts
+                  .getDecorators(param)
+                  ?.map((d) => d.expression)
+                  .filter(ts.isCallExpression);
 
-              const foundFunctionDeclaration = decoratorIdentifiers?.find((n) =>
-                opts?.includedFunctionDecorators?.some(
-                  (d) => d == n.escapedText
-                )
-              );
+                const decoratorIdentifiers = decoratorCallExpressions
+                  ?.map((d) => d.expression)
+                  .filter(ts.isIdentifier);
 
-              if (foundFunctionDeclaration) {
-                console.log(
-                  "found function decorator",
-                  foundFunctionDeclaration.escapedText,
-                  " at constructor for class",
-                  (node.parent as ts.ClassDeclaration).name?.escapedText
+                const foundFunctionDeclaration = decoratorIdentifiers?.find(
+                  (n) =>
+                    opts?.includedFunctionDecorators?.some(
+                      (d) => d == n.escapedText
+                    )
                 );
+
+                if (foundFunctionDeclaration) {
+                  console.log(
+                    "found function decorator",
+                    foundFunctionDeclaration.escapedText,
+                    " injecting",
+                    serviceName,
+                    " at constructor for class",
+                    (node.parent as ts.ClassDeclaration).name?.escapedText
+                  );
+                }
               }
+
+              //   const diDecorators = implement?.map((n) =>
+              //   createDiDecorator("Service", n)
+              // );
+              // diDecorators?.[0];
+              // // Note: used deprecated version as this generates the correct output, for now
+              // node = factory.updateClassDeclaration(
+              //   node,
+              //   [...(ts.getDecorators(node) ?? []), ...(diDecorators ?? [])],
+              //   ts.getModifiers(node),
+              //   node.name,
+              //   node.typeParameters,
+              //   node.heritageClauses,
+              //   node.members
+              // );
             });
 
             return ts.visitEachChild(node, visitor, ctx);
           }
 
           /**
-           *
+           * find "service" decorators and insert service name.
+           * useful for `implements <interface>` and `implements <genericInterface<Type>>` situations
            */
           if (ts.isClassDeclaration(node)) {
             const className = node.name?.escapedText;
