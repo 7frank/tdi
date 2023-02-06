@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { Container, Inject, Service } from "typedi";
 import "./di.generated";
 import { User } from "./User";
-import AutoWire from "./di-utils";
+import AutoWire2 from "./di-utils";
 
 const users: Record<number, User> = {};
 
@@ -13,7 +13,7 @@ export interface CrudInterface<T extends { id: number }> {
 }
 
 // (2) the service that implements the interface and that gets injected
-@AutoWire() // { extends: CrudInterface }
+@AutoWire2() // { extends: CrudInterface }
 @Service()
 export class InMemoryCrudService implements CrudInterface<User> {
   create(t: User) {

@@ -45,10 +45,14 @@ export default function myTransformerPlugin(
             if (hasRelevantDecorator) {
               console.log(decoratorNames, className, implement);
 
-              // Container.set("CrudInterface<User>",InMemoryCrudService);
+              // TODO prepend a code sequence like:  Container.set("CrudInterface<User>",InMemoryCrudService);
+              // https://learning-notes.mistermicheels.com/javascript/typescript/compiler-api/#turning-code-into-a-program
+              // const tmp = ts.factory.createExpressionStatement(
+              //   ts.factory.createCallExpression()
+              // );
 
-              const tmp = ts.factory.createEmptyStatement();
-              return ts.factory.createBlock([tmp, node]);
+              // const tmp = ts.factory.createEmptyStatement();
+              // return ts.factory.createBlock([tmp, node]);
             }
 
             // const target = node.arguments[0];
