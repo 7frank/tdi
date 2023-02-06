@@ -17,3 +17,9 @@ It works the following:
 
 - create AST transformer that parses for AutoWire and prepend `di.generated.ts` automatically at the beginning of the the compiled entry point file
 - create transformer that would make "defer()" redundant
+
+# example usage
+
+`yarn di`
+`yarn build`
+`node dist/index.js`

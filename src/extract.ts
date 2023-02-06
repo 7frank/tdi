@@ -17,7 +17,9 @@ async function main() {
     const hasFoundDecorator = parseSource(source);
 
     if (hasFoundDecorator) {
-      const importPath = entry.split("/").slice(1).join("/");
+      // @ts-ignore
+      let importPath = entry.split("/").slice(1).join("/");
+      importPath = importPath.split(".").slice(0, -1).join(".");
 
       const importStatement = `import "./${importPath}"`;
       console.log(importStatement);
