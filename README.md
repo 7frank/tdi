@@ -14,13 +14,14 @@ It works the following:
 
 # todo
 
-- create AST transformer that parses for AutoWire and prepend `di.generated.ts` automatically at the beginning of the the compiled entry point file
-- create transformer that would make "defer()" redundant
+- create AST transformer `di.generated.ts` automatically at the beginning of the the compiled entry point file
+- change implementation to not have to build twice
 
 # example usage
 
 `yarn build`
 `yarn di`
+`yarn build` (twice T_T, currently necessary to generate all relevant javascript files)
 `node dist/index.js` or `node dist/test.js`
 
 # todo
