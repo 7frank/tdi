@@ -11,15 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InMemoryCrudService = void 0;
 require("reflect-metadata");
 const typedi_1 = require("typedi");
 require("./di.generated");
-const di_utils_1 = __importDefault(require("./di-utils"));
 const users = {};
 // (2) the service that implements the interface and that gets injected
 let InMemoryCrudService = class InMemoryCrudService {
@@ -31,8 +27,6 @@ let InMemoryCrudService = class InMemoryCrudService {
     }
 };
 InMemoryCrudService = __decorate([
-    (0, di_utils_1.default)() // { extends: CrudInterface }
-    ,
     (0, typedi_1.Service)()
 ], InMemoryCrudService);
 exports.InMemoryCrudService = InMemoryCrudService;
