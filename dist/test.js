@@ -39,7 +39,7 @@ let Application = class Application {
 };
 Application = __decorate([
     (0, typedi_1.Service)(),
-    __param(0, (0, typedi_1.Inject)("CrudInterface_User_")),
+    __param(0, (0, typedi_1.Inject)()),
     __metadata("design:paramtypes", [Object])
 ], Application);
 // (4) the result

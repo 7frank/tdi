@@ -17,14 +17,18 @@ export interface MyPluginOptions {
   /**
    * List of class decorators that are used for auto wiring
    */
-  includedDecorators?: string[];
+  includedClassDecorators?: string[];
+  includedFunctionDecorators?: string[];
 }
 
 export default function myTransformerPlugin(
   program: ts.Program,
   opts: MyPluginOptions
 ) {
-  const defaults = { includedDecorators: ["DiService"] };
+  const defaults: Partial<MyPluginOptions> = {
+    includedClassDecorators: ["DiService"],
+    includedFunctionDecorators: ["DiInject"],
+  };
   const file = program.getRootFileNames();
   console.log("parsing file with transformer plugin", file);
 
@@ -36,6 +40,39 @@ export default function myTransformerPlugin(
     before(ctx: ts.TransformationContext) {
       return (sourceFile: ts.SourceFile) => {
         function visitor(node: ts.Node): ts.VisitResult<ts.Node> {
+          if (ts.isConstructorDeclaration(node)) {
+            node.parameters.map((param) => {
+              const decoratorCallExpressions = ts
+                .getDecorators(param)
+                ?.map((d) => d.expression)
+                .filter(ts.isCallExpression);
+
+              const decoratorIdentifiers = decoratorCallExpressions
+                ?.map((d) => d.expression)
+                .filter(ts.isIdentifier);
+
+              const foundFunctionDeclaration = decoratorIdentifiers?.find((n) =>
+                opts?.includedFunctionDecorators?.some(
+                  (d) => d == n.escapedText
+                )
+              );
+
+              if (foundFunctionDeclaration) {
+                console.log(
+                  "found function decorator",
+                  foundFunctionDeclaration.escapedText,
+                  " at constructor for class",
+                  (node.parent as ts.ClassDeclaration).name?.escapedText
+                );
+              }
+            });
+
+            return ts.visitEachChild(node, visitor, ctx);
+          }
+
+          /**
+           *
+           */
           if (ts.isClassDeclaration(node)) {
             const className = node.name?.escapedText;
 
@@ -53,7 +90,7 @@ export default function myTransformerPlugin(
               .filter(ts.isIdentifier);
 
             foundRelevantDecoratorIdentifier = decoratorIdentifiers?.find((n) =>
-              opts?.includedDecorators?.some((d) => d == n.escapedText)
+              opts?.includedClassDecorators?.some((d) => d == n.escapedText)
             );
 
             if (foundRelevantDecoratorIdentifier) {
