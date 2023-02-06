@@ -23,13 +23,13 @@ export default function myTransformerPlugin(
   program: ts.Program,
   opts: MyPluginOptions
 ) {
-  const defaults = { includedDecorators: ["AutoWire2", "Service"] };
+  const defaults = { includedDecorators: ["DiService"] };
   const file = program.getRootFileNames();
   console.log("parsing file with transformer plugin", file);
 
   opts = { ...defaults, ...opts };
 
-  let foundRelevantDecorator: ts.__String | undefined;
+  let foundRelevantDecoratorIdentifier: ts.Identifier | undefined;
 
   return {
     before(ctx: ts.TransformationContext) {
@@ -42,22 +42,23 @@ export default function myTransformerPlugin(
               ?.flatMap((n) => n.types.map((f) => f.getText()))
               .map(sanitize);
 
-            const decoratorNames = ts
+            const decoratorCallExpressions = ts
               .getDecorators(node)
               ?.map((d) => d.expression)
-              .filter(ts.isCallExpression)
-              .map((d) => d.expression)
-              .filter(ts.isIdentifier)
-              .map((d) => d.escapedText);
+              .filter(ts.isCallExpression);
 
-            foundRelevantDecorator = decoratorNames?.find((n) =>
-              opts?.includedDecorators?.some((d) => d == n)
+            const decoratorIdentifiers = decoratorCallExpressions
+              ?.map((d) => d.expression)
+              .filter(ts.isIdentifier);
+
+            foundRelevantDecoratorIdentifier = decoratorIdentifiers?.find((n) =>
+              opts?.includedDecorators?.some((d) => d == n.escapedText)
             );
 
-            if (foundRelevantDecorator) {
+            if (foundRelevantDecoratorIdentifier) {
               console.log(
                 "found decorator:",
-                foundRelevantDecorator,
+                foundRelevantDecoratorIdentifier.escapedText,
                 "at class",
                 className,
                 "that implements",
@@ -71,10 +72,34 @@ export default function myTransformerPlugin(
                 return ts.visitEachChild(node, visitor, ctx);
               }
               //  prepend a code sequence like:  Container.set("CrudInterface<User>",InMemoryCrudService);
-              const tmp =
-                implement?.flatMap((i) =>
-                  createDiContainerConnection(className, i)
-                ) ?? [];
+              // const tmp =
+              //   implement?.flatMap((i) =>
+              //     createDiContainerConnection(className, i)
+              //   ) ?? [];
+
+              const tmp = [];
+
+              // const expr =
+              //   foundRelevantDecoratorIdentifier.parent as ts.CallExpression;
+              // return factory.updateCallExpression(
+              //   expr,
+              //   expr.expression,
+              //   undefined,
+              //   [factory.createStringLiteral(implement)]
+              // );
+
+              const diDecorators = implement?.map((n) => createDiDecorator(n));
+              diDecorators?.[0];
+              // Note: used deprecated version as this generates the correct output, for now
+              node = factory.updateClassDeclaration(
+                node,
+                [...(ts.getDecorators(node) ?? []), ...(diDecorators ?? [])],
+                ts.getModifiers(node),
+                node.name,
+                node.typeParameters,
+                node.heritageClauses,
+                node.members
+              );
 
               return [ts.visitEachChild(node, visitor, ctx), ...tmp];
             }
@@ -82,9 +107,9 @@ export default function myTransformerPlugin(
           return ts.visitEachChild(node, visitor, ctx);
         }
         // update import
-        if (foundRelevantDecorator)
-          // TODO second parameter is ignored and we have to use a workaround for now "typedi_1"
-          sourceFile = addDiImportDeclaration(sourceFile, "__DI", "typedi");
+        // if (foundRelevantDecorator)
+        //   // TODO second parameter is ignored and we have to use a workaround for now "typedi_1"
+        //   sourceFile = addDiImportDeclaration(sourceFile, "__DI", "typedi");
 
         return ts.visitEachChild(sourceFile, visitor, ctx);
       };
@@ -99,6 +124,27 @@ export default function myTransformerPlugin(
  */
 function sanitize(s: string) {
   return s.replace(/[^\w\s]/gi, "_");
+}
+
+function createDiDecorator(id: string) {
+  // return factory.createDecorator(
+  //   factory.createCallExpression(
+  //     factory.createIdentifier("Service"),
+  //     undefined,
+  //     [factory.createStringLiteral(id)]
+  //   )
+  // );
+
+  return factory.createDecorator(
+    factory.createCallExpression(
+      factory.createPropertyAccessExpression(
+        factory.createIdentifier("typedi_1"),
+        factory.createIdentifier("Service")
+      ),
+      undefined,
+      [factory.createStringLiteral(id)]
+    )
+  );
 }
 
 function createDiContainerConnection(className: string, implement: string) {

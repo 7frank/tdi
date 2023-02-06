@@ -27,7 +27,8 @@ let InMemoryCrudService = class InMemoryCrudService {
     }
 };
 InMemoryCrudService = __decorate([
-    (0, typedi_1.Service)()
+    (0, typedi_1.Service)(),
+    typedi_1.Service("CrudInterface_User_")
 ], InMemoryCrudService);
 exports.InMemoryCrudService = InMemoryCrudService;
 // (3) the service that uses the interface
@@ -42,6 +43,8 @@ Application = __decorate([
     __metadata("design:paramtypes", [Object])
 ], Application);
 // (4) the result
+// @ts-ignore
+console.log(typedi_1.Container.globalInstance);
 const instance = typedi_1.Container.get(Application);
 instance.databaseService.create({ id: 1, name: "Frank" });
 const user = instance.databaseService.read(1);

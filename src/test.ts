@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { Container, Inject, Service } from "typedi";
+import { Container, Inject, Service as DiService } from "typedi";
 import "./di.generated";
 import { User } from "./User";
 
@@ -12,7 +12,7 @@ export interface CrudInterface<T extends { id: number }> {
 }
 
 // (2) the service that implements the interface and that gets injected
-@Service()
+@DiService()
 export class InMemoryCrudService implements CrudInterface<User> {
   create(t: User) {
     users[t.id] = t;
@@ -24,7 +24,7 @@ export class InMemoryCrudService implements CrudInterface<User> {
 }
 
 // (3) the service that uses the interface
-@Service()
+@DiService()
 class Application {
   constructor(@Inject() public databaseService: CrudInterface<User>) {}
 }
