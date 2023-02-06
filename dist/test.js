@@ -23,7 +23,7 @@ let Application = class Application {
     }
 };
 Application = __decorate([
-    (0, helper_1.AutoWireService)(),
+    (0, typedi_1.Service)(),
     __param(0, helper_1.AutoWireInject("CrudInterface_User_")),
     __metadata("design:paramtypes", [Object])
 ], Application);

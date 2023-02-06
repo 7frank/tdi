@@ -31,3 +31,7 @@ It works the following:
   - (maybe extract from ts-config)
 - order of appearance does matter. we will have to create a dependency tree and generate the imports from there.
   - This could be done, by logging the dependencies in the transformer
+
+# notes
+
+- name root services "Service" and dependent services "AutoWireService" otherwise the current import mechanism gets confused

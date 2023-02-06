@@ -1,12 +1,12 @@
 import "reflect-metadata";
-import { Container } from "typedi";
+import { Container, Service } from "typedi";
 import { CrudInterface } from "./interfaces/CrudInterface";
 import "./di.generated";
 import { AutoWireInject, AutoWireService } from "./helper";
 import { User } from "./interfaces/User";
 
 // (3) the service that uses the interface
-@AutoWireService()
+@Service()
 class Application {
   constructor(@AutoWireInject() public databaseService: CrudInterface<User>) {}
 }
