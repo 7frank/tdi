@@ -76,10 +76,21 @@ export default function myTransformerPlugin(
                   );
                 }
 
+                const diFunctionDecorators = [serviceName]?.map((n) =>
+                  createDiDecorator("Inject", n)
+                );
+
+                const dec = [
+                  // TODO we only want to replace the previous "inject" not throw away all other decorators as well
+                  // ...(ts.getDecorators(param) ?? []),
+                  ...(diFunctionDecorators ?? []),
+                ];
+
                 // TODO update param decorator otherwise nothing will work
+                // Note: used deprecated version as this generates the correct output, for now
                 param = factory.updateParameterDeclaration(
                   param,
-                  ts.getDecorators(param),
+                  dec,
                   ts.getModifiers(param),
                   param.dotDotDotToken,
                   param.name,

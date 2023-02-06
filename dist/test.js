@@ -33,16 +33,14 @@ InMemoryCrudService = __decorate([
 exports.InMemoryCrudService = InMemoryCrudService;
 // (3) the service that uses the interface
 let Application = class Application {
-    constructor(databaseService, databaseService2) {
+    constructor(databaseService) {
         this.databaseService = databaseService;
-        this.databaseService2 = databaseService2;
     }
 };
 Application = __decorate([
     (0, typedi_1.Service)(),
-    __param(0, (0, typedi_1.Inject)()),
-    __param(1, (0, typedi_1.Inject)()),
-    __metadata("design:paramtypes", [Object, Object])
+    __param(0, typedi_1.Inject("CrudInterface_User_")),
+    __metadata("design:paramtypes", [Object])
 ], Application);
 // (4) the result
 // @ts-ignore

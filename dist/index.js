@@ -27,8 +27,8 @@ let Application = class Application {
 };
 Application = __decorate([
     (0, typedi_1.Service)(),
-    __param(0, (0, typedi_1.Inject)()),
-    __param(1, (0, typedi_1.Inject)()),
+    __param(0, typedi_1.Inject("PrintInterface")),
+    __param(1, typedi_1.Inject("CrudInterface_User_")),
     __metadata("design:paramtypes", [PrintInterface_1.PrintInterface,
         CrudInterface_1.CrudInterface])
 ], Application);
