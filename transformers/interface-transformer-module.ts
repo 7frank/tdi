@@ -93,13 +93,26 @@ export default function myTransformerPlugin(
                     param.initializer
                   );
 
+                  /**
+                   * log inject dependencies
+                   */
+                  const targetClassName = (
+                    node.parent as ts.ClassDeclaration
+                  ).name?.escapedText.toString()!;
+                  logDependencies(
+                    sourceFile.fileName,
+                    targetClassName,
+                    serviceName,
+                    "inject"
+                  );
+
                   console.log(
                     "found function decorator",
                     decoratorImportName,
                     " injecting",
                     serviceName,
                     " at constructor for class",
-                    (node.parent as ts.ClassDeclaration).name?.escapedText
+                    targetClassName
                   );
                 }
               }
@@ -164,6 +177,9 @@ export default function myTransformerPlugin(
                 createDiDecorator(foundClassDecoratorName, n)
               );
 
+              /**
+               * log class dependencies
+               */
               implement?.forEach((n) => {
                 const len = process.cwd().split("/").length;
                 const relativeImport =
@@ -173,16 +189,7 @@ export default function myTransformerPlugin(
                     .slice(len + 1)
                     .join("/");
 
-                console.log(relativeImport, className, "=>", n);
-
-                fs.appendFileSync(
-                  "./dependencies.log",
-                  JSON.stringify({
-                    import: relativeImport,
-                    class: className,
-                    extends: n,
-                  }) + "\n"
-                );
+                logDependencies(relativeImport, className, n, "service");
               });
 
               // Note: used deprecated version as this generates the correct output, for now
@@ -205,6 +212,32 @@ export default function myTransformerPlugin(
       };
     },
   };
+}
+
+function logDependencies(
+  fileName: string,
+  id: string,
+  parent: string,
+  type: "service" | "inject"
+) {
+  const len = process.cwd().split("/").length;
+  const relativeImport =
+    "./" +
+    fileName
+      .split("/")
+      .slice(len + 1)
+      .join("/");
+
+  fs.appendFileSync(
+    "./dependencies.log",
+    JSON.stringify({
+      // TODO import path differes between inject and service
+      import: relativeImport,
+      id,
+      parent,
+      type,
+    }) + "\n"
+  );
 }
 
 function createDiDecorator(name: string, id: string) {

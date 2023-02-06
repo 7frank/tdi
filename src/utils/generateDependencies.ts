@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-
+import LTT from "list-to-tree";
 /** work in progress - generate dependency tree from auto wired services */
 
 async function main() {
@@ -19,33 +19,25 @@ async function main() {
       .join(",") +
     "]";
 
-  let json = JSON.parse(jsonString);
+  const json: {
+    id: string;
+    parent: string;
+    type: "services" | "inject";
+    import: string;
+  }[] = JSON.parse(jsonString);
 
-  json = json.map((n) => ({
-    ...n,
-    parentId: n.extends,
-    id: n.class,
-    childNodes: [],
+  const json2 = json.map((n) => ({
+    //...n,
+    type: n.type,
+    parent: n.parent,
+    id: n.id,
   }));
 
-  console.log("JSON", json);
-  const t = createDataTree(json);
-  console.log(t);
+  console.log("JSON", json2);
+  const ltt = new LTT(json2);
+  var tree = ltt.GetTree();
+
+  console.log(tree);
 }
 
 main();
-
-function createDataTree(dataset) {
-  const hashTable = Object.create(null);
-  dataset.forEach(
-    (aData) => (hashTable[aData.Id] = { ...aData, childNodes: [] })
-  );
-  const dataTree = [];
-  dataset.forEach((aData) => {
-    if (aData.parentId) {
-      if (hashTable[aData.parentId])
-        hashTable[aData.parentId].childNodes.push(hashTable[aData.Id]);
-    } else dataTree.push(hashTable[aData.Id]);
-  });
-  return dataTree;
-}

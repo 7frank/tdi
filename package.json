@@ -17,6 +17,7 @@
     "acorn": "^8.8.2",
     "babel-core": "^6.26.3",
     "fast-glob": "^3.2.12",
+    "list-to-tree": "^2.2.5",
     "recast": "^0.22.0",
     "reflect-metadata": "^0.1.13",
     "ttypescript": "^1.5.15",
