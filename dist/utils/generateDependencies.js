@@ -31,13 +31,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
-const list_to_tree_1 = __importDefault(require("list-to-tree"));
+var arrayToTree = require("array-to-tree");
 /** work in progress - generate dependency tree from auto wired services */
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -50,12 +47,42 @@ function main() {
                 .filter((n) => n)
                 .join(",") +
             "]";
-        let json = JSON.parse(jsonString);
-        json = json.map((n) => (Object.assign({}, n)));
-        console.log("JSON", json);
-        const ltt = new list_to_tree_1.default(json);
-        var tree = ltt.GetTree();
-        console.log(tree);
+        const json = JSON.parse(jsonString);
+        let services = json.filter((n) => n.type == "service");
+        let injects = json.filter((n) => n.type == "inject");
+        //   { type: 'service', parent: 'NestedInterface', id: 'NestedChildService'  }
+        // + { type: 'inject' , parent: 'NestedInterface', id: 'BasicPrintService' }
+        //
+        // = { type: 'meta' , parent: 'NestedChildService', id: 'BasicPrintService' }
+        // replace previous parent with new parent
+        const servicesNew = services.map(function (s) {
+            var _a;
+            let res = Object.assign({}, s);
+            const _id = (_a = injects.find((i) => i.parent == s.parent)) === null || _a === void 0 ? void 0 : _a.id;
+            if (_id) {
+                res.parent = _id;
+            }
+            return res;
+        });
+        const servicesInverted = services.map((i) => (Object.assign(Object.assign({}, i), { parent: i.id, id: i.parent })));
+        const root = {
+            // @ts-ignore
+            parent: null,
+            id: "Application",
+            type: "service",
+        };
+        const json2 = [root, ...servicesNew, ...servicesInverted].map((n) => ({
+            //...n,
+            type: n.type,
+            parent: n.parent,
+            id: n.id,
+        }));
+        console.log(json2);
+        const tree = arrayToTree(json2, {
+            parentProperty: "parent",
+            customID: "id",
+        });
+        console.log("tree:", JSON.stringify(tree, null, "  "));
     });
 }
 main();

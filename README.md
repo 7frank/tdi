@@ -24,6 +24,8 @@ It works the following:
 `yarn build`
 `node dist/index.js` or `node dist/test.js`
 
+WIP `tsx ./src/utils/generateDependencies.ts `
+
 # todo
 
 - extract.ts currently contains a static string "AutoWireService",
