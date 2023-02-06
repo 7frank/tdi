@@ -5,7 +5,7 @@ import { PrintInterface } from "./interfaces/PrintInterface";
 // Note: this file must be on top of your application that uses typedi together with the Wire decorator for autowiring to work
 import "./di.generated";
 import { CrudInterface } from "./interfaces/CrudInterface";
-import { User } from "./User";
+import { User } from "./interfaces/User";
 import { AutoWireService, AutoWireInject } from "./helper";
 
 @AutoWireService()

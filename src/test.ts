@@ -3,7 +3,7 @@ import { Container } from "typedi";
 import { CrudInterface } from "./interfaces/CrudInterface";
 import "./di.generated";
 import { AutoWireInject, AutoWireService } from "./helper";
-import { User } from "./User";
+import { User } from "./interfaces/User";
 
 // (3) the service that uses the interface
 @AutoWireService()
