@@ -26,7 +26,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseSource = void 0;
 const recast_1 = require("recast");
 const ts = __importStar(require("recast/parsers/typescript"));
-function parseSource(source, selector = (n) => n == "Autowire" || n == "Wire" || n == "AutoWire") {
+function parseSource(source, selector = (n) => n == "AutoWireService") {
     const ast = (0, recast_1.parse)(source, { parser: ts });
     let hasFound = false;
     (0, recast_1.visit)(ast, {

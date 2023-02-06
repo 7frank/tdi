@@ -22,4 +22,10 @@ It works the following:
 
 `yarn di`
 `yarn build`
-`node dist/index.js`
+`node dist/index.js` or `node dist/test.js`
+
+# todo
+
+- extract.ts currently contains a static string "AutoWireService",
+  - move this into a global config file
+  - (maybe extract from ts-config)

@@ -1,4 +1,4 @@
-import { CrudInterface } from "./CrudInterface";
+import { CrudInterface } from "./interfaces/CrudInterface";
 import { AutoWireService } from "./helper";
 import { User } from "./User";
 

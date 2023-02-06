@@ -3,7 +3,7 @@ import * as ts from "recast/parsers/typescript";
 
 export function parseSource(
   source: string,
-  selector = (n) => n == "Autowire" || n == "Wire" || n == "AutoWire"
+  selector = (n) => n == "AutoWireService"
 ) {
   const ast = parse(source, { parser: ts });
   let hasFound = false;

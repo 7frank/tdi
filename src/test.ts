@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { Container } from "typedi";
-import { CrudInterface } from "./CrudInterface";
+import { CrudInterface } from "./interfaces/CrudInterface";
 import "./di.generated";
 import { AutoWireInject, AutoWireService } from "./helper";
 import { User } from "./User";
