@@ -1,0 +1,2 @@
+{"import":"./services/BasicPrintService.ts","class":"BasicPrintService","extends":"PrintInterface"}
+{"import":"./services/InMemoryCrudService.ts","class":"InMemoryCrudService","extends":"CrudInterface_User_"}

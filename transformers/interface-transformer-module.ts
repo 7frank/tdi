@@ -1,6 +1,7 @@
 import * as ts from "typescript";
 import { factory } from "typescript";
 import { sanitize } from "./sanitize";
+import * as fs from "fs";
 
 /**
  * A transformer that searches for certain class decorators and add di logic for auto wiring.
@@ -173,6 +174,15 @@ export default function myTransformerPlugin(
                     .join("/");
 
                 console.log(relativeImport, className, "=>", n);
+
+                fs.appendFileSync(
+                  "./dependencies.log",
+                  JSON.stringify({
+                    import: relativeImport,
+                    class: className,
+                    extends: n,
+                  }) + "\n"
+                );
               });
 
               // Note: used deprecated version as this generates the correct output, for now

@@ -1,6 +1,6 @@
-import { CrudInterface } from "./interfaces/CrudInterface";
-import { AutoWireService } from "./helper";
-import { User } from "./interfaces/User";
+import { CrudInterface } from "../interfaces/CrudInterface";
+import { AutoWireService } from "../helper";
+import { User } from "../interfaces/User";
 
 const users: Record<number, User> = {};
 

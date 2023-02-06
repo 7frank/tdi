@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node --compiler ttypescript src/index.ts",
-    "build": "ttsc",
+    "build": "rm -f dependencies.log && ttsc",
     "di": "tsx src/utils/extract.ts > src/di.generated.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
