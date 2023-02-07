@@ -17,18 +17,24 @@ if you want to add your own services:
 
 # example usage
 
-`yarn build`
-`yarn di`
-`yarn build` (twice T_T, currently necessary to generate all relevant javascript files)
-`node dist/index.js`, `node dist/example.js` or `node dist/test.js`
+- `yarn build`
+- `yarn di`
+- `yarn build` (twice T_T, currently necessary to generate all relevant javascript files)
+- `node dist/index.js`, `node dist/example.js` or `node dist/test.js`
+
+# resource
+
+- [What is Dependency Injection](https://www.baeldung.com/inversion-control-and-dependency-injection-in-spring#what-is-dependency-injection)
+- [really old thread asking for feature](https://stackoverflow.com/questions/33088936/typescript-dependency-injection-with-autowiring)
+- [might contain similar feature](https://github.com/zazoomauro/node-dependency-injection/wiki/Autowire)
 
 # develop
 
 (!) internal
 
-`yarn dev` to run the di example
+- `yarn dev` to run the di example
 
-`yarn di` to query for DI interfaces and update di.generated.ts file that needs to be imported at the top of your index file
+- `yarn di` to query for DI interfaces and update di.generated.ts file that needs to be imported at the top of your index file
 
 # todo
 
