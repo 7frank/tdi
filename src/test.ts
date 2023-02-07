@@ -1,10 +1,11 @@
 import "reflect-metadata";
 import "./di.generated";
-import { Service } from "typedi";
+import Container, { Service } from "typedi";
 import { PrintInterface } from "./interfaces/PrintInterface";
-import { CrudInterface } from "./interfaces/CrudInterface";
-import { User } from "./interfaces/User";
 import { AutoWireInject } from "./helper";
+
+import { describe, it } from "node:test";
+import assert from "node:assert";
 
 @Service()
 class Application {
@@ -17,7 +18,28 @@ const dummyPrinter = new (class Dummy {
   }
 })();
 
-// not injected, good for testing
-const testee = new Application(dummyPrinter);
+describe("testing dependency injection", () => {
+  it("should work when using auto wiring & dependency injection", () => {
+    const testee = Container.get(Application);
 
-testee.printService.print();
+    assert.doesNotThrow(() => {
+      testee.printService.print();
+    }, Error);
+  });
+
+  it("should work when manually passing param", () => {
+    const testee = new Application(dummyPrinter);
+
+    assert.doesNotThrow(() => {
+      testee.printService.print();
+    }, Error);
+  });
+
+  it("should fail if no value is passed", () => {
+    const testee = new Application(undefined as any);
+
+    assert.throws(() => {
+      testee.printService.print();
+    }, Error);
+  });
+});
