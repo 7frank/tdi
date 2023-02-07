@@ -17,6 +17,8 @@ if you want to add your own services:
 
 # example usage
 
+- `npm install -g tsx ts-node` get a copy of tsx and ts-node
+
 - `yarn build`
 - `yarn di`
 - `yarn build` (twice T_T, currently necessary to generate all relevant javascript files)
