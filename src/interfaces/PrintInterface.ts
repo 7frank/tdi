@@ -1,3 +1,3 @@
 export interface PrintInterface {
-  print: () => void;
+  print: (message?: string) => void;
 }

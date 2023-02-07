@@ -6,8 +6,11 @@ import { PrintInterface } from "../interfaces/PrintInterface";
 export class BasicPrintService implements PrintInterface {
   constructor(@AutoWireInject() private nestedService: NestedInterface) {}
 
-  print() {
-    console.log("I am alive!");
+  print(message?: string) {
+    console.log(
+      "Hello from 'BasicPrintService' that implements 'PrintInterface'",
+      message ? "with message" + message : ""
+    );
     this.nestedService.some();
   }
 }

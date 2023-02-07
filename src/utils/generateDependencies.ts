@@ -82,7 +82,7 @@ async function main() {
   t.forEach((importPath) => {
     importPath = importPath.split(".").slice(0, -1).join(".");
 
-    const importStatement = `import "./${importPath}"`;
+    const importStatement = `import "${importPath}"`;
     console.log(importStatement);
   });
 }

@@ -4,6 +4,8 @@ import { NestedInterface } from "../interfaces/NestedInterface";
 @AutoWireService()
 export class NestedChildService implements NestedInterface {
   some() {
-    console.log("I'm a nested service ");
+    console.log(
+      "Hello from 'NestedChildService' that implements 'NestedInterface'"
+    );
   }
 }

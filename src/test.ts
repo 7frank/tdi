@@ -1,20 +1,23 @@
 import "reflect-metadata";
-import { Container, Service } from "typedi";
-import { CrudInterface } from "./interfaces/CrudInterface";
 import "./di.generated";
-import { AutoWireInject, AutoWireService } from "./helper";
+import { Service } from "typedi";
+import { PrintInterface } from "./interfaces/PrintInterface";
+import { CrudInterface } from "./interfaces/CrudInterface";
 import { User } from "./interfaces/User";
+import { AutoWireInject } from "./helper";
 
-// (3) the service that uses the interface
 @Service()
 class Application {
-  constructor(@AutoWireInject() public databaseService: CrudInterface<User>) {}
+  constructor(@AutoWireInject() public printService: PrintInterface) {}
 }
 
-// (4) the result
-// @ts-ignore
-console.log(Container.globalInstance);
-const instance = Container.get(Application);
-instance.databaseService.create({ id: 1, name: "Frank" });
-const user = instance.databaseService.read(1);
-console.log(user);
+const dummyPrinter = new (class Dummy {
+  print() {
+    console.log("it works");
+  }
+})();
+
+// not injected, good for testing
+const testee = new Application(dummyPrinter);
+
+testee.printService.print();
