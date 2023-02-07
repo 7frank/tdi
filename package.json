@@ -8,7 +8,8 @@
     "build": "rm -f dependencies.log && ttsc",
     "di": "tsx ./src/utils/generateDependencies.ts > src/di.generated.ts",
     "di-old": "tsx src/utils/extract.ts > src/di.generated.ts",
-    "test": "ts-node --compiler ttypescript src/test.ts"
+    "test": "ts-node --compiler ttypescript src/test.ts",
+    "circular": "npx madge --circular src/index.ts"
   },
   "author": "",
   "license": "ISC",
